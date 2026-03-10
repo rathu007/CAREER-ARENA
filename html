@@ -28,8 +28,9 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .ri-step.done{border-color:var(--accent3);color:var(--accent3);}
 .ri-step.active{border-color:var(--accent);color:var(--accent);background:rgba(245,197,24,0.08);}
 .ri-sep{color:var(--muted);font-size:0.8rem;}
-.player-badge{font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--muted);}
+.player-badge{font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--muted);display:flex;align-items:center;gap:7px;}
 .player-badge span{color:var(--accent);}
+.badge-ava{font-size:1.1rem;line-height:1;}
 
 /* LOBBY */
 #screen-lobby{background:radial-gradient(ellipse 60% 50% at 20% 50%,rgba(245,197,24,0.07) 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 80% 30%,rgba(77,159,255,0.05) 0%,transparent 60%),var(--bg);justify-content:center;align-items:center;}
@@ -41,7 +42,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .lobby-title .t1{display:block;color:var(--text);}
 .lobby-title .t2{display:block;-webkit-text-stroke:2px var(--accent);color:transparent;animation:hollowFlicker 3s ease-in-out infinite;}
 @keyframes hollowFlicker{0%,100%{color:transparent}60%{color:var(--accent)}}
-.lobby-sub{color:var(--muted2);font-size:0.95rem;line-height:1.7;margin-bottom:36px;}
+.lobby-sub{color:var(--muted2);font-size:0.95rem;line-height:1.7;margin-bottom:28px;}
 .name-row{display:flex;gap:0;margin-bottom:16px;}
 .name-input{flex:1;background:var(--card);border:1px solid var(--border);border-right:none;padding:16px 20px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1rem;outline:none;transition:border-color 0.2s;}
 .name-input:focus{border-color:var(--accent);}
@@ -53,6 +54,25 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .li-num{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--accent);}
 .li-label{font-family:'Space Mono',monospace;font-size:0.55rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
 
+/* AVATAR PICKER */
+.ava-section{margin-bottom:22px;text-align:left;}
+.ava-heading{font-family:'Space Mono',monospace;font-size:0.54rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.ava-heading::after{content:'';flex:1;height:1px;background:var(--border);}
+.ava-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px;}
+.ava-btn{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:18px 6px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform 0.18s,border-color 0.18s,box-shadow 0.18s,background 0.18s;position:relative;}
+.ava-btn:hover{border-color:var(--muted2);transform:translateY(-5px);box-shadow:0 10px 28px rgba(0,0,0,0.4);}
+.ava-btn.selected{border-color:var(--accent);background:rgba(245,197,24,0.08);transform:translateY(-5px);box-shadow:0 10px 32px rgba(245,197,24,0.22);}
+.ava-btn.selected::after{content:'✓';position:absolute;top:6px;right:8px;font-family:'Space Mono',monospace;font-size:0.48rem;color:var(--accent);}
+.ava-emoji{font-size:2.3rem;line-height:1;pointer-events:none;}
+.ava-label{font-family:'Space Mono',monospace;font-size:0.46rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);transition:color 0.18s;pointer-events:none;}
+.ava-btn.selected .ava-label{color:var(--accent);}
+.ava-preview{display:flex;align-items:center;gap:15px;padding:13px 18px;background:var(--card);border:1px solid var(--border);margin-bottom:16px;min-height:58px;transition:border-color 0.25s,background 0.25s;}
+.ava-preview.lit{border-color:rgba(245,197,24,0.4);background:rgba(245,197,24,0.04);}
+.avp-emoji{font-size:2rem;flex-shrink:0;line-height:1;}
+.avp-info{text-align:left;}
+.avp-name{font-size:0.92rem;font-weight:500;color:var(--text);margin-bottom:2px;}
+.avp-hint{font-family:'Space Mono',monospace;font-size:0.48rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+
 /* LOADING */
 #screen-loading{justify-content:center;align-items:center;background:var(--bg);}
 .loading-inner{text-align:center;}
@@ -61,9 +81,43 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .loading-text{font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
 .loading-sub{color:var(--accent);margin-top:8px;font-size:0.85rem;}
 
-/* QUIZ */
+/* QUIZ SCOREBOARD */
 #screen-quiz{background:var(--bg);}
-.quiz-body{flex:1;display:flex;flex-direction:column;padding:36px 40px;max-width:860px;margin:0 auto;width:100%;}
+.quiz-layout{flex:1;display:grid;grid-template-columns:1fr 260px;gap:0;max-width:1160px;margin:0 auto;width:100%;}
+.quiz-main{padding:36px 32px;display:flex;flex-direction:column;}
+.quiz-sidebar{border-left:1px solid var(--border);background:var(--surface);padding:24px 18px;display:flex;flex-direction:column;gap:0;}
+.sb-title{font-family:'Space Mono',monospace;font-size:0.54rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.sb-qcount{font-size:0.5rem;color:var(--muted2);}
+.sb-players{display:flex;flex-direction:column;gap:8px;}
+.sb-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 13px;transition:border-color 0.35s,background 0.35s;position:relative;overflow:hidden;}
+.sb-row.is-you{border-color:rgba(245,197,24,0.3);}
+.sb-row.is-leader{border-color:var(--accent);background:rgba(245,197,24,0.06);}
+.sb-row.climbed{animation:sbClimb 0.5s ease;}
+@keyframes sbClimb{0%{transform:translateY(8px);opacity:0.5}100%{transform:translateY(0);opacity:1}}
+.sb-row-top{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.sb-rank{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;line-height:1;width:18px;text-align:center;flex-shrink:0;color:var(--muted);}
+.sb-rank.r1{color:var(--accent);}
+.sb-rank.r2{color:var(--muted2);}
+.sb-rank.r3{color:#cd7f32;}
+.sb-avatar{font-size:1.1rem;line-height:1;flex-shrink:0;}
+.sb-info{flex:1;min-width:0;}
+.sb-name{font-size:0.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
+.sb-name.you-tag::after{content:' (You)';font-size:0.65rem;color:var(--accent);font-weight:400;}
+.sb-pts{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;line-height:1;color:var(--text);flex-shrink:0;}
+.sb-pts.leader-pts{color:var(--accent);}
+.sb-bar-wrap{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.sb-bar{height:100%;border-radius:2px;transition:width 0.55s cubic-bezier(0.34,1.56,0.64,1);width:0%;}
+.sb-crown{position:absolute;top:6px;right:10px;font-size:0.9rem;animation:crownPop 0.4s ease;}
+@keyframes crownPop{0%{transform:scale(0) rotate(-20deg);opacity:0}70%{transform:scale(1.3) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+.sb-delta{font-family:'Space Mono',monospace;font-size:0.46rem;padding:1px 5px;border-radius:3px;margin-left:4px;vertical-align:middle;}
+.sb-delta.up{background:rgba(0,229,160,0.15);color:var(--accent3);}
+.sb-delta.same{background:rgba(112,112,160,0.1);color:var(--muted);}
+.sb-divider{height:1px;background:var(--border);margin:14px 0;}
+.sb-stat-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.sb-stat-lbl{font-family:'Space Mono',monospace;font-size:0.5rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.sb-stat-val{font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--text);}
+.sb-stat-val.hi{color:var(--accent3);}
+.sb-stat-val.lo{color:var(--accent2);}
 .quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;}
 .q-progress-wrap{flex:1;margin-right:28px;}
 .q-progress-label{font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;}
@@ -292,6 +346,187 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .confetti-container{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden;}
 .confetti-piece{position:absolute;width:8px;height:8px;animation:confettiFall linear forwards;}
 @keyframes confettiFall{0%{transform:translateY(-20px)rotate(0deg);opacity:1}100%{transform:translateY(110vh)rotate(720deg);opacity:0}}
+
+/* ══════════════════════════════════════
+   VOICE CHAT FEATURE
+══════════════════════════════════════ */
+
+/* Voice bar — floats at bottom of GD + Interview screens */
+.voice-bar{display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--card);border:1px solid var(--border);border-top:2px solid var(--accent3);margin-top:16px;position:relative;}
+.voice-bar.iv-voice{border-top-color:var(--accent2);}
+.voice-bar-label{font-family:'Space Mono',monospace;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+
+/* Mic button */
+.mic-btn{width:44px;height:44px;border-radius:50%;border:2px solid var(--accent3);background:transparent;color:var(--accent3);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;position:relative;}
+.mic-btn:hover{background:rgba(0,229,160,0.1);}
+.mic-btn.recording{background:rgba(255,77,77,0.15);border-color:var(--accent2);color:var(--accent2);animation:micPulse 1s infinite;}
+.mic-btn.iv-mic{border-color:var(--accent2);color:var(--accent2);}
+.mic-btn.iv-mic.recording{border-color:var(--accent2);background:rgba(255,77,77,0.2);}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,77,77,0.4)}50%{box-shadow:0 0 0 10px rgba(255,77,77,0)}}
+
+/* Waveform visualizer */
+.voice-wave{display:flex;align-items:center;gap:3px;height:28px;flex:1;}
+.vw-bar{width:3px;border-radius:2px;background:var(--border);transition:height 0.1s ease;}
+.voice-wave.active .vw-bar{background:var(--accent3);}
+.voice-wave.iv-wave.active .vw-bar{background:var(--accent2);}
+
+/* Voice status text */
+.voice-status{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--muted);min-width:110px;letter-spacing:1px;}
+.voice-status.vs-recording{color:var(--accent2);}
+.voice-status.vs-processing{color:var(--accent);}
+.voice-status.vs-speaking{color:var(--accent3);}
+
+/* Voice transcript bubble — shows live recognised speech */
+.voice-transcript{flex:1;font-size:0.82rem;color:var(--muted2);line-height:1.5;min-height:20px;font-style:italic;}
+.voice-transcript.vt-live{color:var(--text);}
+
+/* Use-voice toggle pill */
+.voice-toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.voice-toggle-pill{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);padding:7px 14px;cursor:pointer;transition:all 0.2s;font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.voice-toggle-pill.active{border-color:var(--accent3);color:var(--accent3);background:rgba(0,229,160,0.06);}
+.voice-toggle-pill.iv-pill.active{border-color:var(--accent2);color:var(--accent2);background:rgba(255,77,77,0.06);}
+.vtp-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background 0.2s;}
+.voice-toggle-pill.active .vtp-dot{background:var(--accent3);}
+.voice-toggle-pill.iv-pill.active .vtp-dot{background:var(--accent2);}
+
+/* AI voice indicator — plays when AI speaks */
+.ai-speaking-chip{display:none;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--accent4);letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(77,159,255,0.3);background:rgba(77,159,255,0.06);}
+.ai-speaking-chip.visible{display:flex;}
+.ai-wave{display:flex;gap:2px;align-items:center;}
+.ai-wave span{display:inline-block;width:2px;background:var(--accent4);border-radius:1px;animation:aiWave 0.8s infinite ease-in-out;}
+.ai-wave span:nth-child(1){height:6px;animation-delay:0s;}
+.ai-wave span:nth-child(2){height:12px;animation-delay:0.1s;}
+.ai-wave span:nth-child(3){height:8px;animation-delay:0.2s;}
+.ai-wave span:nth-child(4){height:14px;animation-delay:0.15s;}
+.ai-wave span:nth-child(5){height:6px;animation-delay:0.05s;}
+@keyframes aiWave{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
+
+/* Voice mode notice banner */
+.voice-mode-notice{background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);padding:10px 16px;font-size:0.8rem;color:var(--accent3);line-height:1.55;margin-bottom:14px;display:none;}
+.voice-mode-notice.show{display:block;}
+.voice-mode-notice.iv-notice{background:rgba(255,77,77,0.06);border-color:rgba(255,77,77,0.2);color:var(--accent2);}
+
+/* ── GUIDE BUTTON ── */
+.guide-fab{position:fixed;bottom:28px;right:28px;z-index:900;background:var(--card);border:1px solid var(--accent);color:var(--accent);font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:11px 18px;cursor:pointer;display:flex;align-items:center;gap:8px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all 0.25s;box-shadow:0 0 24px rgba(245,197,24,0.12);}
+.guide-fab:hover{background:var(--accent);color:#080810;box-shadow:0 0 36px rgba(245,197,24,0.35);}
+.guide-fab .gf-icon{font-size:1rem;}
+
+/* ── GUIDE OVERLAY ── */
+.guide-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.35s ease;}
+.guide-overlay.open{opacity:1;pointer-events:all;}
+.guide-backdrop{position:absolute;inset:0;background:rgba(4,4,10,0.92);backdrop-filter:blur(18px);}
+.guide-modal{position:relative;z-index:1;width:100%;max-width:860px;max-height:90vh;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);transform:translateY(30px) scale(0.97);transition:transform 0.35s cubic-bezier(0.34,1.4,0.64,1);}
+.guide-overlay.open .guide-modal{transform:translateY(0) scale(1);}
+
+/* header */
+.guide-header{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.guide-header-left{display:flex;flex-direction:column;gap:4px;}
+.guide-eyebrow{font-family:'Space Mono',monospace;font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px;}
+.guide-eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:var(--accent);}
+.guide-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:3px;color:var(--text);}
+.guide-close{width:36px;height:36px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+.guide-close:hover{border-color:var(--accent2);color:var(--accent2);}
+
+/* step nav tabs */
+.guide-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
+.guide-tab{flex:1;min-width:80px;padding:12px 8px;font-family:'Space Mono',monospace;font-size:0.52rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:5px;white-space:nowrap;}
+.guide-tab .gt-icon{font-size:1.1rem;}
+.guide-tab:hover{color:var(--text);background:rgba(255,255,255,0.02);}
+.guide-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(245,197,24,0.04);}
+.guide-tab.done-tab{color:var(--accent3);}
+.guide-tab.done-tab.active{color:var(--accent3);border-bottom-color:var(--accent3);}
+
+/* content */
+.guide-content{flex:1;overflow-y:auto;padding:0;}
+.guide-panel{display:none;animation:gpFadeIn 0.3s ease;}
+.guide-panel.active{display:block;}
+@keyframes gpFadeIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+
+/* hero panel (overview) */
+.gp-hero{padding:32px 28px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(245,197,24,0.06) 0%,transparent 70%);}
+.gp-hero-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--accent);margin-bottom:8px;}
+.gp-hero-sub{color:var(--muted2);font-size:0.9rem;line-height:1.7;max-width:640px;margin-bottom:28px;}
+.flow-track{display:flex;align-items:center;gap:0;flex-wrap:wrap;gap:0;}
+.flow-node{display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px 20px;background:var(--surface);border:1px solid var(--border);min-width:130px;flex:1;position:relative;}
+.flow-node.fn-active{border-color:var(--accent);background:rgba(245,197,24,0.05);}
+.flow-node .fn-badge{font-family:'Space Mono',monospace;font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.flow-node .fn-icon{font-size:1.6rem;margin-bottom:6px;}
+.flow-node .fn-name{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px;color:var(--text);}
+.flow-node .fn-tag{font-family:'Space Mono',monospace;font-size:0.44rem;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+.flow-arrow{color:var(--muted);font-size:1.1rem;padding:0 4px;flex-shrink:0;}
+.scoring-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px;}
+.sg-card{background:var(--surface);border:1px solid var(--border);padding:16px 18px;}
+.sg-card-title{font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.sg-card-body{font-size:0.82rem;color:var(--muted2);line-height:1.65;}
+.sg-card-body strong{color:var(--text);}
+
+/* detail panels */
+.gp-detail{padding:28px;}
+.gp-section-label{font-family:'Space Mono',monospace;font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.gp-section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.step-cards{display:flex;flex-direction:column;gap:12px;}
+.step-card{display:flex;gap:18px;background:var(--surface);border:1px solid var(--border);padding:18px 20px;position:relative;overflow:hidden;transition:border-color 0.2s;}
+.step-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.step-card.sc-quiz::before{background:var(--accent);}
+.step-card.sc-gd::before{background:var(--accent3);}
+.step-card.sc-iv::before{background:var(--accent2);}
+.step-card.sc-final::before{background:var(--accent4);}
+.step-card.sc-info::before{background:var(--muted);}
+.sc-num{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;line-height:1;flex-shrink:0;width:36px;}
+.step-card.sc-quiz .sc-num{color:var(--accent);}
+.step-card.sc-gd .sc-num{color:var(--accent3);}
+.step-card.sc-iv .sc-num{color:var(--accent2);}
+.step-card.sc-final .sc-num{color:var(--accent4);}
+.sc-body{}
+.sc-head{font-weight:600;font-size:0.92rem;margin-bottom:5px;}
+.sc-desc{font-size:0.82rem;color:var(--muted2);line-height:1.65;}
+.sc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.sc-tag{font-family:'Space Mono',monospace;font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border:1px solid var(--border);color:var(--muted);}
+.sc-tag.t-time{border-color:var(--accent4);color:var(--accent4);}
+.sc-tag.t-score{border-color:var(--accent3);color:var(--accent3);}
+.sc-tag.t-warn{border-color:var(--accent);color:var(--accent);}
+
+/* tips panel */
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tip-card{background:var(--surface);border:1px solid var(--border);padding:18px 20px;}
+.tip-round{font-family:'Space Mono',monospace;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.tip-round.tr-q{color:var(--accent);}
+.tip-round.tr-gd{color:var(--accent3);}
+.tip-round.tr-iv{color:var(--accent2);}
+.tip-round.tr-gen{color:var(--accent4);}
+.tip-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{font-size:0.81rem;color:var(--muted2);line-height:1.55;display:flex;gap:8px;}
+.tip-list li::before{content:'→';color:var(--muted);flex-shrink:0;font-family:'Space Mono',monospace;font-size:0.7rem;margin-top:1px;}
+
+/* scoring panel */
+.score-breakdown{display:flex;flex-direction:column;gap:16px;}
+.sb-row{background:var(--surface);border:1px solid var(--border);padding:20px 22px;display:flex;gap:20px;align-items:flex-start;}
+.sb-weight{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;line-height:1;flex-shrink:0;width:68px;text-align:center;}
+.sb-row:nth-child(1) .sb-weight{color:var(--accent);}
+.sb-row:nth-child(2) .sb-weight{color:var(--accent3);}
+.sb-row:nth-child(3) .sb-weight{color:var(--accent2);}
+.sb-info{}
+.sb-title{font-weight:600;font-size:0.9rem;margin-bottom:5px;}
+.sb-body{font-size:0.82rem;color:var(--muted2);line-height:1.65;}
+.sb-formula{font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--accent);background:rgba(245,197,24,0.06);border:1px solid rgba(245,197,24,0.15);padding:8px 12px;margin-top:10px;display:inline-block;letter-spacing:1px;}
+.verdict-table{width:100%;border-collapse:collapse;margin-top:20px;}
+.verdict-table th{font-family:'Space Mono',monospace;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.verdict-table td{font-size:0.82rem;padding:10px 14px;border-bottom:1px solid rgba(28,28,46,0.5);color:var(--muted2);}
+.verdict-table tr:last-child td{border-bottom:none;}
+.vt-hire{color:var(--accent3);font-weight:600;}
+.vt-maybe{color:var(--accent);font-weight:600;}
+.vt-pass{color:var(--accent2);font-weight:600;}
+
+/* footer nav */
+.guide-footer{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-top:1px solid var(--border);flex-shrink:0;}
+.guide-step-dots{display:flex;gap:6px;}
+.gsd{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:all 0.2s;}
+.gsd.active{background:var(--accent);width:20px;border-radius:4px;}
+.guide-nav-btns{display:flex;gap:8px;}
+.gnb{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:all 0.2s;}
+.gnb:hover{border-color:var(--text);color:var(--text);}
+.gnb.primary{background:var(--accent);border-color:var(--accent);color:#080810;}
+.gnb.primary:hover{background:#fff;border-color:#fff;}
 </style>
 </head>
 <body>
@@ -302,6 +537,22 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <div class="lobby-tag"><span class="pulse"></span> Season 01 · Open Registration</div>
     <h1 class="lobby-title"><span class="t1">Career</span><span class="t2">Arena</span></h1>
     <p class="lobby-sub">Three rounds. One champion. Aptitude quiz, group discussion with AI + crowd scoring, then a live interview judged by both AI and audience.</p>
+
+    <!-- Avatar Picker -->
+    <div class="ava-section">
+      <div class="ava-heading">Choose Your Avatar</div>
+      <div class="ava-grid" id="ava-grid"></div>
+    </div>
+
+    <!-- Live Preview Bar -->
+    <div class="ava-preview" id="ava-preview">
+      <div class="avp-emoji" id="avp-emoji">🎭</div>
+      <div class="avp-info">
+        <div class="avp-name" id="avp-name">Select an avatar to begin</div>
+        <div class="avp-hint">Displayed across all game rounds</div>
+      </div>
+    </div>
+
     <div class="name-row">
       <input class="name-input" id="player-name-input" type="text" placeholder="Enter your name to compete..." maxlength="24">
       <button class="btn-enter" onclick="startGame()">Enter Arena →</button>
@@ -335,32 +586,58 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       <div class="ri-sep">›</div>
       <div class="ri-step">💼 Round 3 · Interview</div>
     </div>
-    <div class="player-badge">Player: <span id="hdr-name-q">—</span></div>
+    <div class="player-badge"><span class="badge-ava" id="hdr-ava-q">🎭</span>Player: <span id="hdr-name-q">—</span></div>
   </div>
-  <div class="quiz-body">
-    <div class="quiz-meta">
-      <div class="q-progress-wrap">
-        <div class="q-progress-label"><span>Progress</span><span id="q-prog-text">1 / 10</span></div>
-        <div class="q-progress-bar"><div class="q-progress-fill" id="q-prog-fill" style="width:10%"></div></div>
+
+  <div class="quiz-layout">
+    <!-- Main question area -->
+    <div class="quiz-main">
+      <div class="quiz-meta">
+        <div class="q-progress-wrap">
+          <div class="q-progress-label"><span>Progress</span><span id="q-prog-text">1 / 10</span></div>
+          <div class="q-progress-bar"><div class="q-progress-fill" id="q-prog-fill" style="width:10%"></div></div>
+        </div>
+        <div class="q-timer" id="q-timer">
+          <svg width="68" height="68" viewBox="0 0 68 68">
+            <circle cx="34" cy="34" r="28" fill="none" stroke="#1c1c2e" stroke-width="4"/>
+            <circle id="timer-circle" cx="34" cy="34" r="28" fill="none" stroke="#f5c518" stroke-width="4"
+              stroke-dasharray="176" stroke-dashoffset="0" stroke-linecap="round" style="transition:stroke-dashoffset 1s linear"/>
+          </svg>
+          <div class="q-timer-text" id="q-timer-text">25</div>
+        </div>
       </div>
-      <div class="q-timer" id="q-timer">
-        <svg width="68" height="68" viewBox="0 0 68 68">
-          <circle cx="34" cy="34" r="28" fill="none" stroke="#1c1c2e" stroke-width="4"/>
-          <circle id="timer-circle" cx="34" cy="34" r="28" fill="none" stroke="#f5c518" stroke-width="4"
-            stroke-dasharray="176" stroke-dashoffset="0" stroke-linecap="round" style="transition:stroke-dashoffset 1s linear"/>
-        </svg>
-        <div class="q-timer-text" id="q-timer-text">25</div>
+      <div class="q-card">
+        <div class="q-number" id="q-number">QUESTION 01</div>
+        <div class="q-text" id="q-text">Loading…</div>
+        <div class="q-options" id="q-options"></div>
+      </div>
+      <div class="q-feedback" id="q-feedback"></div>
+      <div class="q-footer">
+        <div class="q-score-mini">Score: <span id="live-score">0</span> correct</div>
+        <button class="btn-next" id="btn-next" disabled onclick="nextQuestion()">Next →</button>
       </div>
     </div>
-    <div class="q-card">
-      <div class="q-number" id="q-number">QUESTION 01</div>
-      <div class="q-text" id="q-text">Loading…</div>
-      <div class="q-options" id="q-options"></div>
-    </div>
-    <div class="q-feedback" id="q-feedback"></div>
-    <div class="q-footer">
-      <div class="q-score-mini">Score: <span id="live-score">0</span> correct</div>
-      <button class="btn-next" id="btn-next" disabled onclick="nextQuestion()">Next →</button>
+
+    <!-- Live Scoreboard Sidebar -->
+    <div class="quiz-sidebar">
+      <div class="sb-title">
+        Live Scoreboard
+        <span class="sb-qcount" id="sb-qcount">Q0 of 10</span>
+      </div>
+      <div class="sb-players" id="sb-players"></div>
+      <div class="sb-divider"></div>
+      <div class="sb-stat-row">
+        <span class="sb-stat-lbl">Top Score</span>
+        <span class="sb-stat-val hi" id="sb-top-score">—</span>
+      </div>
+      <div class="sb-stat-row">
+        <span class="sb-stat-lbl">Your Rank</span>
+        <span class="sb-stat-val" id="sb-your-rank">—</span>
+      </div>
+      <div class="sb-stat-row">
+        <span class="sb-stat-lbl">Gap to Lead</span>
+        <span class="sb-stat-val lo" id="sb-gap">—</span>
+      </div>
     </div>
   </div>
 </section>
@@ -398,7 +675,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       <div class="ri-sep">›</div>
       <div class="ri-step">💼 Round 3</div>
     </div>
-    <div class="player-badge">Player: <span id="hdr-name-gd">—</span></div>
+    <div class="player-badge"><span class="badge-ava" id="hdr-ava-gd">🎭</span>Player: <span id="hdr-name-gd">—</span></div>
   </div>
   <div class="gd-body">
     <div class="gd-main">
@@ -411,7 +688,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         <div class="phase-desc" id="phase-desc">Organise your thoughts and key arguments.</div>
       </div>
       <div class="gd-timer-big">
-        <div class="gd-timer-num" id="gd-timer-num">3:00</div>
+        <div class="gd-timer-num" id="gd-timer-num">1:00</div>
         <div class="gd-timer-label" id="gd-timer-label">Preparation Time</div>
       </div>
       <div class="section-lbl">📝 Your Preparation Notes</div>
@@ -421,7 +698,37 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       </div>
       <div id="gd-speech-area" style="display:none;margin-top:18px;">
         <div class="section-lbl">💬 Your Speech (60 seconds)</div>
-        <textarea class="gd-notes" id="gd-speech-input" placeholder="Type your speech…" style="min-height:110px;border-color:var(--accent3)"></textarea>
+
+        <!-- Voice toggle -->
+        <div class="voice-toggle-row">
+          <button class="voice-toggle-pill" id="gd-voice-toggle" onclick="toggleVoiceMode('gd')">
+            <span class="vtp-dot"></span>🎙️ Use Voice Instead
+          </button>
+          <span style="font-size:0.75rem;color:var(--muted)">speak your speech aloud</span>
+        </div>
+
+        <!-- Voice notice -->
+        <div class="voice-mode-notice" id="gd-voice-notice">
+          🎙️ <strong>Voice Mode ON</strong> — Click the mic, speak your speech, then click Stop. Your words appear below automatically.
+        </div>
+
+        <textarea class="gd-notes" id="gd-speech-input" placeholder="Type your speech… or use the 🎙️ mic below" style="min-height:110px;border-color:var(--accent3)"></textarea>
+
+        <!-- Voice bar -->
+        <div class="voice-bar" id="gd-voice-bar" style="display:none;">
+          <span class="voice-bar-label">🎤 MIC</span>
+          <button class="mic-btn" id="gd-mic-btn" onclick="toggleGDMic()" title="Start/Stop Recording">🎤</button>
+          <div class="voice-wave" id="gd-wave">
+            <div class="vw-bar" style="height:8px"></div><div class="vw-bar" style="height:14px"></div>
+            <div class="vw-bar" style="height:6px"></div><div class="vw-bar" style="height:18px"></div>
+            <div class="vw-bar" style="height:10px"></div><div class="vw-bar" style="height:20px"></div>
+            <div class="vw-bar" style="height:8px"></div><div class="vw-bar" style="height:14px"></div>
+            <div class="vw-bar" style="height:16px"></div><div class="vw-bar" style="height:6px"></div>
+            <div class="vw-bar" style="height:12px"></div><div class="vw-bar" style="height:18px"></div>
+          </div>
+          <div class="voice-status" id="gd-voice-status">Ready</div>
+        </div>
+
         <div class="gd-action-row">
           <button class="btn-speak" id="btn-submit-speech" onclick="submitSpeech()" style="background:var(--accent);color:#080810">Submit Speech ✓</button>
         </div>
@@ -470,7 +777,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       <div class="ri-sep">›</div>
       <div class="ri-step active">💼 Round 3 · Interview</div>
     </div>
-    <div class="player-badge">Player: <span id="hdr-name-iv">—</span></div>
+    <div class="player-badge"><span class="badge-ava" id="hdr-ava-iv">🎭</span>Player: <span id="hdr-name-iv">—</span></div>
   </div>
   <div class="interview-body">
     <div class="interview-main">
@@ -482,7 +789,43 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         <div class="iq-text" id="iv-q-text">Loading…</div>
       </div>
       <div class="section-lbl">✍️ Your Answer</div>
-      <textarea class="answer-textarea" id="iv-answer" placeholder="Type your answer here…"></textarea>
+
+      <!-- Voice toggle for interview -->
+      <div class="voice-toggle-row">
+        <button class="voice-toggle-pill iv-pill" id="iv-voice-toggle" onclick="toggleVoiceMode('iv')">
+          <span class="vtp-dot"></span>🎙️ Speak Your Answer
+        </button>
+        <span style="font-size:0.75rem;color:var(--muted)">use your voice to answer</span>
+      </div>
+
+      <!-- Voice notice -->
+      <div class="voice-mode-notice iv-notice" id="iv-voice-notice">
+        🎙️ <strong>Voice Mode ON</strong> — Click the mic and speak your answer. The AI interviewer will also read the question aloud to you.
+      </div>
+
+      <textarea class="answer-textarea" id="iv-answer" placeholder="Type your answer here… or use the 🎙️ mic below"></textarea>
+
+      <!-- Voice bar for interview -->
+      <div class="voice-bar iv-voice" id="iv-voice-bar" style="display:none;">
+        <span class="voice-bar-label">🎤 MIC</span>
+        <button class="mic-btn iv-mic" id="iv-mic-btn" onclick="toggleIVMic()" title="Start/Stop Recording">🎤</button>
+        <div class="voice-wave" id="iv-wave">
+          <div class="vw-bar" style="height:8px"></div><div class="vw-bar" style="height:14px"></div>
+          <div class="vw-bar" style="height:6px"></div><div class="vw-bar" style="height:18px"></div>
+          <div class="vw-bar" style="height:10px"></div><div class="vw-bar" style="height:20px"></div>
+          <div class="vw-bar" style="height:8px"></div><div class="vw-bar" style="height:14px"></div>
+          <div class="vw-bar" style="height:16px"></div><div class="vw-bar" style="height:6px"></div>
+          <div class="vw-bar" style="height:12px"></div><div class="vw-bar" style="height:18px"></div>
+        </div>
+        <div class="voice-status" id="iv-voice-status">Ready</div>
+      </div>
+
+      <!-- AI speaking chip -->
+      <div class="ai-speaking-chip" id="ai-speaking-chip">
+        <div class="ai-wave"><span></span><span></span><span></span><span></span><span></span></div>
+        AI Interviewer Speaking…
+      </div>
+
       <div id="iv-review-area"></div>
       <div class="interview-footer">
         <div class="q-counter">Question <span id="iv-q-num">1</span> of 3</div>
@@ -528,6 +871,348 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <button class="play-again-btn" onclick="restartGame()">⟳ Play Again</button>
   </div>
 </section>
+
+<!-- GUIDE FAB -->
+<button class="guide-fab" onclick="openGuide()" title="How to Play">
+  <span class="gf-icon">📖</span> How to Play
+</button>
+
+<!-- GUIDE OVERLAY -->
+<div class="guide-overlay" id="guide-overlay">
+  <div class="guide-backdrop" onclick="closeGuide()"></div>
+  <div class="guide-modal">
+
+    <!-- Header -->
+    <div class="guide-header">
+      <div class="guide-header-left">
+        <div class="guide-eyebrow">Game Guide</div>
+        <div class="guide-title">How Career Arena Works</div>
+      </div>
+      <button class="guide-close" onclick="closeGuide()">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="guide-tabs">
+      <button class="guide-tab active" onclick="switchGuideTab(0)" id="gtab-0">
+        <span class="gt-icon">🗺️</span>Overview
+      </button>
+      <button class="guide-tab" onclick="switchGuideTab(1)" id="gtab-1">
+        <span class="gt-icon">🧠</span>Round 1
+      </button>
+      <button class="guide-tab" onclick="switchGuideTab(2)" id="gtab-2">
+        <span class="gt-icon">🗣️</span>Round 2
+      </button>
+      <button class="guide-tab" onclick="switchGuideTab(3)" id="gtab-3">
+        <span class="gt-icon">💼</span>Round 3
+      </button>
+      <button class="guide-tab" onclick="switchGuideTab(4)" id="gtab-4">
+        <span class="gt-icon">📊</span>Scoring
+      </button>
+      <button class="guide-tab" onclick="switchGuideTab(5)" id="gtab-5">
+        <span class="gt-icon">💡</span>Tips
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="guide-content">
+
+      <!-- Panel 0: Overview -->
+      <div class="guide-panel active" id="gpanel-0">
+        <div class="gp-hero">
+          <div class="gp-hero-title">Three Rounds. One Champion.</div>
+          <div class="gp-hero-sub">Career Arena puts you through the full recruitment gauntlet — from aptitude testing to group debate to a live interview. Every round is judged by both an AI evaluator and a live audience panel, making every performance count.</div>
+
+          <div class="flow-track">
+            <div class="flow-node fn-active">
+              <div class="fn-badge">Start</div>
+              <div class="fn-icon">🏟️</div>
+              <div class="fn-name">Lobby</div>
+              <div class="fn-tag">Enter your name</div>
+            </div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">
+              <div class="fn-badge">Round 1</div>
+              <div class="fn-icon">🧠</div>
+              <div class="fn-name">Quiz</div>
+              <div class="fn-tag">10 Qs · 25s each</div>
+            </div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">
+              <div class="fn-badge">Round 2</div>
+              <div class="fn-icon">🗣️</div>
+              <div class="fn-name">Group GD</div>
+              <div class="fn-tag">Debate · Vote</div>
+            </div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">
+              <div class="fn-badge">Round 3</div>
+              <div class="fn-icon">💼</div>
+              <div class="fn-name">Interview</div>
+              <div class="fn-tag">3 Qs · AI judged</div>
+            </div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">
+              <div class="fn-badge">End</div>
+              <div class="fn-icon">🏆</div>
+              <div class="fn-name">Final</div>
+              <div class="fn-tag">Podium reveal</div>
+            </div>
+          </div>
+
+          <div class="scoring-grid">
+            <div class="sg-card">
+              <div class="sg-card-title">🤖 AI Judge</div>
+              <div class="sg-card-body">Every answer and speech is evaluated by an <strong>AI Interviewer</strong> that scores your clarity, relevance, and depth — giving detailed strengths and improvement tips.</div>
+            </div>
+            <div class="sg-card">
+              <div class="sg-card-title">👥 Audience Panel</div>
+              <div class="sg-card-body">A panel of <strong>virtual audience members</strong> votes on each of your responses independently. Their combined verdict shapes your final standing.</div>
+            </div>
+            <div class="sg-card">
+              <div class="sg-card-title">⚡ AI Competitors</div>
+              <div class="sg-card-body">You're not alone — <strong>3 AI candidates</strong> compete alongside you in the GD and are ranked on the final leaderboard.</div>
+            </div>
+            <div class="sg-card">
+              <div class="sg-card-title">🎯 Qualify or Judge</div>
+              <div class="sg-card-body">Score <strong>5 or more</strong> on the quiz to advance as a player. Score below 5 and you become a <em>judge</em> — you still influence the outcome through your vote!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 1: Quiz -->
+      <div class="guide-panel" id="gpanel-1">
+        <div class="gp-detail">
+          <div class="gp-section-label">Round 1 · Aptitude Quiz</div>
+          <div class="step-cards">
+            <div class="step-card sc-quiz">
+              <div class="sc-num">01</div>
+              <div class="sc-body">
+                <div class="sc-head">10 Questions Selected from a 40+ Bank</div>
+                <div class="sc-desc">Questions are randomly picked across four categories: <em>Logical Reasoning</em>, <em>Numerical Aptitude</em>, <em>Verbal Ability</em>, and <em>General Knowledge</em>. Each playthrough is unique.</div>
+                <div class="sc-tags"><span class="sc-tag">40+ questions</span><span class="sc-tag t-score">4 categories</span><span class="sc-tag">randomised</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-quiz">
+              <div class="sc-num">02</div>
+              <div class="sc-body">
+                <div class="sc-head">25-Second Timer Per Question</div>
+                <div class="sc-desc">A circular countdown timer ticks for each question. When it hits <strong>10 seconds</strong>, it turns red and shakes to warn you. Time out = the question is auto-skipped with no point.</div>
+                <div class="sc-tags"><span class="sc-tag t-time">25s per question</span><span class="sc-tag t-warn">red alert at 10s</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-quiz">
+              <div class="sc-num">03</div>
+              <div class="sc-body">
+                <div class="sc-head">Instant Feedback After Every Answer</div>
+                <div class="sc-desc">After selecting an option, the correct answer is highlighted in green, wrong ones in red, and a short explanation is shown at the bottom so you always learn from each question.</div>
+                <div class="sc-tags"><span class="sc-tag t-score">live feedback</span><span class="sc-tag">explanations</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-quiz">
+              <div class="sc-num">04</div>
+              <div class="sc-body">
+                <div class="sc-head">Qualify or Become a Judge</div>
+                <div class="sc-desc">Score <strong>5 or more out of 10</strong> to advance to the Group Discussion as a full competitor. If you score below 5, you become a <em>Judge</em> — you watch the GD and vote for the winner, still influencing the final result.</div>
+                <div class="sc-tags"><span class="sc-tag t-score">5/10 = advance</span><span class="sc-tag t-warn">&lt;5 = Judge role</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: GD -->
+      <div class="guide-panel" id="gpanel-2">
+        <div class="gp-detail">
+          <div class="gp-section-label">Round 2 · Group Discussion</div>
+          <div class="step-cards">
+            <div class="step-card sc-gd">
+              <div class="sc-num">01</div>
+              <div class="sc-body">
+                <div class="sc-head">Topic Reveal & 3-Minute Prep Phase</div>
+                <div class="sc-desc">A random GD topic is revealed — you get <strong>3 minutes</strong> to prepare your arguments in the notes area. Use this time to jot key points, counter-arguments, and real-world examples.</div>
+                <div class="sc-tags"><span class="sc-tag t-time">3 min prep</span><span class="sc-tag">10 possible topics</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-gd">
+              <div class="sc-num">02</div>
+              <div class="sc-body">
+                <div class="sc-head">Deliver Your 60-Second Speech</div>
+                <div class="sc-desc">Click <em>"Start My Speech"</em> to open the speech textarea. You have <strong>60 seconds</strong> to type and submit a well-structured argument. Your speech is compared against the AI players' speeches.</div>
+                <div class="sc-tags"><span class="sc-tag t-time">60s speech window</span><span class="sc-tag t-score">vs 3 AI players</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-gd">
+              <div class="sc-num">03</div>
+              <div class="sc-body">
+                <div class="sc-head">AI Speeches Are Generated</div>
+                <div class="sc-desc">Three AI competitors each deliver their own AI-generated speeches on the same topic. These appear in the right-hand sidebar for you to read and compare. All speeches are then evaluated.</div>
+                <div class="sc-tags"><span class="sc-tag">AI speeches revealed</span><span class="sc-tag">sidebar feed</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-gd">
+              <div class="sc-num">04</div>
+              <div class="sc-body">
+                <div class="sc-head">Dual Scoring: AI + Audience</div>
+                <div class="sc-desc">Both the AI judge and the audience panel score all participants. Scores appear in the live dual-panel. You also get to <strong>cast your audience vote</strong> for the best speaker — your vote contributes to the final scores.</div>
+                <div class="sc-tags"><span class="sc-tag t-score">AI + audience score</span><span class="sc-tag t-warn">your vote matters</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Interview -->
+      <div class="guide-panel" id="gpanel-3">
+        <div class="gp-detail">
+          <div class="gp-section-label">Round 3 · Live Interview</div>
+          <div class="step-cards">
+            <div class="step-card sc-iv">
+              <div class="sc-num">01</div>
+              <div class="sc-body">
+                <div class="sc-head">3 Personalised Interview Questions</div>
+                <div class="sc-desc">The AI generates <strong>3 interview questions</strong> tailored to the GD topic you just debated — covering HR, behavioural, and situational angles. Each question appears one at a time.</div>
+                <div class="sc-tags"><span class="sc-tag t-time">3 questions</span><span class="sc-tag">HR · Behavioural · Situational</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-iv">
+              <div class="sc-num">02</div>
+              <div class="sc-body">
+                <div class="sc-head">Type Your Answer, Then Submit</div>
+                <div class="sc-desc">Use the answer textarea to write your response. Take your time — there's no timer in the interview round. Focus on structure: <em>Situation → Action → Result</em> works well for most questions.</div>
+                <div class="sc-tags"><span class="sc-tag">no timer</span><span class="sc-tag t-score">quality over speed</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-iv">
+              <div class="sc-num">03</div>
+              <div class="sc-body">
+                <div class="sc-head">Instant AI Review + Audience Vote</div>
+                <div class="sc-desc">After submitting, the AI Interviewer provides a <strong>score out of 10</strong> with specific strengths and improvement notes. Simultaneously, the virtual audience panel updates their votes live in the sidebar.</div>
+                <div class="sc-tags"><span class="sc-tag t-score">/10 score</span><span class="sc-tag">strengths + tips</span><span class="sc-tag">live audience</span></div>
+              </div>
+            </div>
+            <div class="step-card sc-iv">
+              <div class="sc-num">04</div>
+              <div class="sc-body">
+                <div class="sc-head">Verdict: HIRE / MAYBE / PASS</div>
+                <div class="sc-desc">Each answer receives a verdict — <span style="color:var(--accent3)">HIRE</span> (strong), <span style="color:var(--accent)">MAYBE</span> (borderline), or <span style="color:var(--accent2)">PASS</span> (needs work). Your combined interview score feeds directly into the final championship calculation.</div>
+                <div class="sc-tags"><span class="sc-tag" style="border-color:var(--accent3);color:var(--accent3)">HIRE</span><span class="sc-tag" style="border-color:var(--accent);color:var(--accent)">MAYBE</span><span class="sc-tag" style="border-color:var(--accent2);color:var(--accent2)">PASS</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4: Scoring -->
+      <div class="guide-panel" id="gpanel-4">
+        <div class="gp-detail">
+          <div class="gp-section-label">How Your Final Score Is Calculated</div>
+          <div class="score-breakdown">
+            <div class="sb-row">
+              <div class="sb-weight">25%</div>
+              <div class="sb-info">
+                <div class="sb-title">🧠 Round 1 — Aptitude Quiz</div>
+                <div class="sb-body">Your raw quiz score (correct answers out of 10) is scaled to a 0–10 value and contributes 25% of your total. Getting 8+ here gives you a meaningful head start.</div>
+                <div class="sb-formula">Quiz contribution = (score / 10) × 10 × 0.25</div>
+              </div>
+            </div>
+            <div class="sb-row">
+              <div class="sb-weight">35%</div>
+              <div class="sb-info">
+                <div class="sb-title">🗣️ Round 2 — Group Discussion</div>
+                <div class="sb-body">The average of your AI judge score and your audience score from the GD contributes 35%. Both judges evaluate content quality, clarity, and persuasiveness independently.</div>
+                <div class="sb-formula">GD contribution = ((AI score + Audience score) / 2) × 0.35</div>
+              </div>
+            </div>
+            <div class="sb-row">
+              <div class="sb-weight">40%</div>
+              <div class="sb-info">
+                <div class="sb-title">💼 Round 3 — Interview</div>
+                <div class="sb-body">The highest-weighted round. Your average AI score across 3 questions is averaged with the cumulative audience score and contributes 40% — making this the most impactful round.</div>
+                <div class="sb-formula">IV contribution = ((AI avg + Audience avg) / 2) × 0.40</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;">
+            <div class="gp-section-label">Interview Verdict Thresholds</div>
+            <table class="verdict-table">
+              <thead><tr><th>Score Range</th><th>Verdict</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td>7.0 – 10.0</td><td class="vt-hire">✓ HIRE</td><td>Outstanding response — shows strong competency</td></tr>
+                <tr><td>5.0 – 6.9</td><td class="vt-maybe">~ MAYBE</td><td>Decent response — some areas to sharpen</td></tr>
+                <tr><td>0.0 – 4.9</td><td class="vt-pass">✗ PASS</td><td>Needs significant improvement in depth or clarity</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5: Tips -->
+      <div class="guide-panel" id="gpanel-5">
+        <div class="gp-detail">
+          <div class="gp-section-label">Pro Tips to Win Career Arena</div>
+          <div class="tips-grid">
+            <div class="tip-card">
+              <div class="tip-round tr-q">🧠 Quiz Tips</div>
+              <ul class="tip-list">
+                <li>Read questions fully before looking at options — tricky wording is intentional.</li>
+                <li>Eliminate obviously wrong answers first to narrow your choice quickly.</li>
+                <li>If you're stuck with under 8 seconds left, guess — unanswered = 0 points.</li>
+                <li>Numerical questions often have shortcuts; avoid full long-form calculation.</li>
+              </ul>
+            </div>
+            <div class="tip-card">
+              <div class="tip-round tr-gd">🗣️ GD Tips</div>
+              <ul class="tip-list">
+                <li>Use the full 3-minute prep — outline: intro point, 2 arguments, a counterpoint, and conclusion.</li>
+                <li>Cite real-world examples to boost your AI score; abstract arguments score lower.</li>
+                <li>Keep your speech structured: state your stand in the first sentence.</li>
+                <li>Read AI speeches before voting — vote strategically, it affects your score too.</li>
+              </ul>
+            </div>
+            <div class="tip-card">
+              <div class="tip-round tr-iv">💼 Interview Tips</div>
+              <ul class="tip-list">
+                <li>Use the STAR method: <strong>S</strong>ituation, <strong>T</strong>ask, <strong>A</strong>ction, <strong>R</strong>esult.</li>
+                <li>There's no timer — take time to write a complete, thoughtful answer.</li>
+                <li>Directly address the question asked; don't go off-topic.</li>
+                <li>Aim for 3–5 sentences minimum per answer for a strong AI score.</li>
+              </ul>
+            </div>
+            <div class="tip-card">
+              <div class="tip-round tr-gen">⚡ General Strategy</div>
+              <ul class="tip-list">
+                <li>Interview (40%) matters most — save your best effort for Round 3.</li>
+                <li>Even as a Judge role (quiz fail), your GD vote still shapes the final leaderboard.</li>
+                <li>The AI and audience scores are independent — aim to impress both.</li>
+                <li>Play multiple times: the question bank and GD topics rotate randomly.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end guide-content -->
+
+    <!-- Footer -->
+    <div class="guide-footer">
+      <div class="guide-step-dots">
+        <div class="gsd active" onclick="switchGuideTab(0)" id="gdot-0"></div>
+        <div class="gsd" onclick="switchGuideTab(1)" id="gdot-1"></div>
+        <div class="gsd" onclick="switchGuideTab(2)" id="gdot-2"></div>
+        <div class="gsd" onclick="switchGuideTab(3)" id="gdot-3"></div>
+        <div class="gsd" onclick="switchGuideTab(4)" id="gdot-4"></div>
+        <div class="gsd" onclick="switchGuideTab(5)" id="gdot-5"></div>
+      </div>
+      <div class="guide-nav-btns">
+        <button class="gnb" id="gnb-prev" onclick="guideNav(-1)">← Prev</button>
+        <button class="gnb primary" id="gnb-next" onclick="guideNav(1)">Next →</button>
+      </div>
+    </div>
+
+  </div><!-- end guide-modal -->
+</div><!-- end guide-overlay -->
 
 <div class="confetti-container" id="confetti-container"></div>
 
@@ -622,7 +1307,7 @@ const COLORS = ['#f5c518','#00e5a0','#4d9fff','#ff9f4d','#e066ff','#ff4d88'];
 //  STATE
 // ════════════════════════════════════════════
 const S = {
-  playerName:'', quizQs:[], currentQ:0, score:0, passed:false,
+  playerName:'', playerAvatar:'', quizQs:[], currentQ:0, score:0, passed:false,
   gdTopic:'', gdSpeech:'', aiPlayers:[], aiSpeeches:{},
   gdAIScores:{}, gdAudScores:{}, gdVotes:{},
   ivQs:[], currentIQ:0, ivAnswers:[], ivAIReviews:[],
@@ -638,18 +1323,120 @@ function setLoading(t,s){ document.getElementById('loading-text').textContent=t;
 function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
 
 // ════════════════════════════════════════════
-//  CLAUDE API
+//  MISTRAL API  (used for interview evaluation)
+// ════════════════════════════════════════════
+const MISTRAL_KEY = 'Ca83dX5AzuAlzkxpmT8vtH0hBtL2liWd';
+const MISTRAL_MODEL = 'mistral-large-latest';
+
+async function callMistral(prompt, system = '') {
+  const messages = [];
+  if (system) messages.push({ role: 'system', content: system });
+  messages.push({ role: 'user', content: prompt });
+
+  const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${MISTRAL_KEY}`
+    },
+    body: JSON.stringify({
+      model: MISTRAL_MODEL,
+      max_tokens: 600,
+      messages
+    })
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    console.error('Mistral API error:', data);
+    return null;
+  }
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callMistralJSON(prompt, system = '') {
+  const raw = await callMistral(prompt, system);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw.replace(/```json|```/g, '').trim());
+  } catch(e) {
+    // try to extract JSON object from response
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (match) {
+      try { return JSON.parse(match[0]); } catch(e2) {}
+    }
+    return null;
+  }
+}
+
+// ════════════════════════════════════════════
+//  CLAUDE API  (kept for GD speech generation)
 // ════════════════════════════════════════════
 async function callClaude(prompt, system=''){
   const body = { model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompt}] };
   if(system) body.system=system;
-  const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  const data = await res.json();
-  return data.content.map(c=>c.text||'').join('');
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const data = await res.json();
+    return data.content.map(c=>c.text||'').join('');
+  } catch(e) {
+    // fallback to Mistral if Claude unavailable
+    return await callMistral(prompt, system) || '';
+  }
 }
 async function callClaudeJSON(prompt,system=''){
   const raw = await callClaude(prompt,system);
   try{ return JSON.parse(raw.replace(/```json|```/g,'').trim()); }catch(e){ return null; }
+}
+
+// ════════════════════════════════════════════
+//  AVATAR SYSTEM
+// ════════════════════════════════════════════
+const AVATARS = [
+  { emoji:'🧑‍💻', label:'Coder'    },
+  { emoji:'👩‍💼', label:'Leader'   },
+  { emoji:'🥷',   label:'Ninja'    },
+  { emoji:'🦁',   label:'Lion'     },
+  { emoji:'🚀',   label:'Rocket'   },
+  { emoji:'🦊',   label:'Fox'      },
+  { emoji:'🤖',   label:'Bot'      },
+  { emoji:'🧙',   label:'Wizard'   },
+  { emoji:'🏆',   label:'Champ'    },
+  { emoji:'🎯',   label:'Focused'  },
+];
+let selectedAvatar = null;
+
+function initAvatarGrid(){
+  document.getElementById('ava-grid').innerHTML = AVATARS.map((a,i)=>
+    `<button class="ava-btn" id="ava-${i}" onclick="pickAvatar(${i})">
+       <span class="ava-emoji">${a.emoji}</span>
+       <span class="ava-label">${a.label}</span>
+     </button>`
+  ).join('');
+}
+
+function pickAvatar(idx){
+  document.querySelectorAll('.ava-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`ava-${idx}`).classList.add('selected');
+  selectedAvatar = AVATARS[idx];
+  document.getElementById('avp-emoji').textContent = selectedAvatar.emoji;
+  document.getElementById('ava-preview').classList.add('lit');
+  refreshPreviewName();
+}
+
+function refreshPreviewName(){
+  if(!selectedAvatar) return;
+  const n = document.getElementById('player-name-input').value.trim();
+  document.getElementById('avp-name').textContent = n
+    ? `${selectedAvatar.emoji}  ${n}`
+    : `${selectedAvatar.label} · type your name above`;
+}
+
+function resetAvatarUI(){
+  selectedAvatar = null;
+  initAvatarGrid();
+  document.getElementById('avp-emoji').textContent = '🎭';
+  document.getElementById('avp-name').textContent  = 'Select an avatar to begin';
+  document.getElementById('ava-preview').classList.remove('lit');
 }
 
 // ════════════════════════════════════════════
@@ -658,10 +1445,100 @@ async function callClaudeJSON(prompt,system=''){
 function startGame(){
   const n = document.getElementById('player-name-input').value.trim();
   if(!n){ document.getElementById('player-name-input').style.borderColor='var(--accent2)'; return; }
-  S.playerName = n;
+  if(!selectedAvatar){
+    // shake the grid to prompt avatar selection
+    const g = document.getElementById('ava-grid');
+    g.style.outline = '2px solid var(--accent2)';
+    g.style.outlineOffset = '6px';
+    g.style.borderRadius = '4px';
+    setTimeout(()=>{ g.style.outline='none'; }, 1400);
+    return;
+  }
+  S.playerName   = n;
+  S.playerAvatar = selectedAvatar.emoji;
   document.querySelectorAll('#hdr-name-q,#hdr-name-gd,#hdr-name-iv').forEach(el=>el.textContent=n);
+  document.querySelectorAll('#hdr-ava-q,#hdr-ava-gd,#hdr-ava-iv').forEach(el=>el.textContent=selectedAvatar.emoji);
   prepareQuiz();
   showScreen('screen-quiz');
+}
+
+// ════════════════════════════════════════════
+//  QUIZ SCOREBOARD
+// ════════════════════════════════════════════
+const SB_AI = [
+  { name:'Arjun M.',  color:'#f5c518', emoji:'🧑' },
+  { name:'Priya K.',  color:'#00e5a0', emoji:'👩' },
+  { name:'Rahul S.',  color:'#4d9fff', emoji:'🧑' },
+];
+let sbScores = []; // [{name,emoji,color,score,isYou}]
+let sbPrevRanks = {};
+
+function initScoreboard(){
+  sbScores = [
+    { name: S.playerName, emoji: S.playerAvatar||'🎭', color:'#f5c518', score:0, isYou:true },
+    ...SB_AI.map(a=>({ ...a, score:0, isYou:false }))
+  ];
+  sbPrevRanks = {};
+  sbScores.forEach((p,i)=>{ sbPrevRanks[p.name]=i; });
+  renderScoreboard();
+}
+
+function tickAIScores(playerGotRight){
+  // AI gets each Q right with ~55% chance; slightly higher if player got it wrong
+  const chance = playerGotRight ? 0.50 : 0.62;
+  sbScores.forEach(p=>{ if(!p.isYou && Math.random() < chance) p.score++; });
+}
+
+function renderScoreboard(){
+  const total = S.quizQs.length || 10;
+  const answered = S.currentQ;
+
+  // sort by score desc, stable: keep original order for ties
+  const sorted = [...sbScores].sort((a,b)=> b.score - a.score || (a.isYou?-1:1));
+  const leader = sorted[0];
+
+  document.getElementById('sb-qcount').textContent = `Q${answered} of ${total}`;
+  document.getElementById('sb-top-score').textContent = `${leader.score}/${answered}`;
+
+  const youEntry = sorted.find(p=>p.isYou);
+  const yourRank = sorted.indexOf(youEntry)+1;
+  document.getElementById('sb-your-rank').textContent = `#${yourRank} of ${sorted.length}`;
+
+  const gap = leader.score - (youEntry?.score||0);
+  const gapEl = document.getElementById('sb-gap');
+  gapEl.textContent = gap===0 ? 'Leading! 🔥' : `−${gap} pts`;
+  gapEl.className = `sb-stat-val ${gap===0?'hi':'lo'}`;
+
+  const container = document.getElementById('sb-players');
+  container.innerHTML = sorted.map((p,i)=>{
+    const rank = i+1;
+    const rankClass = rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
+    const isLeader = rank===1;
+    const barPct = answered>0 ? Math.round((p.score/answered)*100) : 0;
+    const prevRank = sbPrevRanks[p.name] ?? i;
+    const climbed = rank < prevRank;
+    const delta = prevRank - rank; // positive = climbed up
+    const deltaHtml = answered>0
+      ? `<span class="sb-delta ${delta>0?'up':'same'}">${delta>0?'↑'+delta:'—'}</span>`
+      : '';
+    return `<div class="sb-row${p.isYou?' is-you':''}${isLeader?' is-leader':''}${climbed?' climbed':''}" id="sbr-${p.name.replace(/\W/g,'_')}">
+      ${isLeader?'<span class="sb-crown">👑</span>':''}
+      <div class="sb-row-top">
+        <span class="sb-rank ${rankClass}">${rank}</span>
+        <span class="sb-avatar">${p.emoji}</span>
+        <div class="sb-info">
+          <div class="sb-name${p.isYou?' you-tag':''}">${p.name}${deltaHtml}</div>
+        </div>
+        <span class="sb-pts${isLeader?' leader-pts':''}">${p.score}</span>
+      </div>
+      <div class="sb-bar-wrap">
+        <div class="sb-bar" style="background:${p.color};width:${barPct}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Update prev ranks for next render
+  sorted.forEach((p,i)=>{ sbPrevRanks[p.name]=i; });
 }
 
 // ════════════════════════════════════════════
@@ -681,6 +1558,7 @@ function prepareQuiz(){
   while(picked.length<10) picked.push(remaining[picked.length-10] || remaining[0]);
   S.quizQs = picked.slice(0,10).sort(()=>Math.random()-0.5);
   S.currentQ=0; S.score=0;
+  initScoreboard();
   renderQuestion();
   startQuizTimer();
 }
@@ -722,6 +1600,9 @@ function autoAdvance(){
   fb.textContent=`⏱ Time's up! Correct: ${['A','B','C','D'][q.answer]}. ${q.explanation}`;
   document.querySelectorAll('.q-option').forEach(b=>b.disabled=true);
   document.querySelectorAll('.q-option')[q.answer].classList.add('correct');
+  // timed out = player got it wrong
+  tickAIScores(false);
+  renderScoreboard();
   document.getElementById('btn-next').disabled=false;
 }
 function selectAnswer(idx){
@@ -730,9 +1611,15 @@ function selectAnswer(idx){
   const btns=document.querySelectorAll('.q-option');
   btns.forEach(b=>b.disabled=true);
   const fb=document.getElementById('q-feedback');
-  if(idx===q.answer){S.score++;btns[idx].classList.add('correct');fb.className='q-feedback correct-fb';fb.textContent=`✓ Correct! ${q.explanation}`;}
+  const gotRight = idx===q.answer;
+  if(gotRight){S.score++;btns[idx].classList.add('correct');fb.className='q-feedback correct-fb';fb.textContent=`✓ Correct! ${q.explanation}`;}
   else{btns[idx].classList.add('wrong');btns[q.answer].classList.add('correct');fb.className='q-feedback wrong-fb';fb.textContent=`✗ Incorrect. Correct: ${['A','B','C','D'][q.answer]}. ${q.explanation}`;}
   document.getElementById('live-score').textContent=S.score;
+  // update player score in scoreboard
+  const me = sbScores.find(p=>p.isYou);
+  if(me) me.score = S.score;
+  tickAIScores(gotRight);
+  renderScoreboard();
   document.getElementById('btn-next').disabled=false;
 }
 function nextQuestion(){
@@ -774,20 +1661,20 @@ async function loadGD(){
 }
 
 function renderGDPlayers(){
-  const you={name:S.playerName,color:COLORS[3],initial:S.playerName[0],isYou:true};
+  const you={name:S.playerName,color:COLORS[3],initial:S.playerAvatar||S.playerName[0],isYou:true};
   S.gdPlayers=[you,...S.aiPlayers];
   const list=document.getElementById('gd-player-list');
   list.innerHTML=S.gdPlayers.map(p=>
     `<div class="player-row${p.isYou?' you':''}" id="pr-${uid(p.name)}">
-      <div class="p-ava" style="background:${p.color}22;color:${p.color}">${p.initial}</div>
+      <div class="p-ava" style="background:${p.color}22;color:${p.color};font-size:${p.isYou?'1.1rem':'0.62rem'}">${p.initial}</div>
       <div class="p-name">${p.name}${p.isYou?' (You)':''}</div>
       <div class="p-status waiting" id="ps-${uid(p.name)}">Preparing</div>
     </div>`).join('');
 }
 
-let prepSecs=180;
+let prepSecs=60;
 function startPrepTimer(){
-  clearInterval(S.gdTimerInterval); prepSecs=180; updateGDTimer(prepSecs);
+  clearInterval(S.gdTimerInterval); prepSecs=60; updateGDTimer(prepSecs);
   document.getElementById('gd-notes').disabled=false;
   S.gdTimerInterval=setInterval(()=>{ prepSecs--; updateGDTimer(prepSecs); if(prepSecs<=0){clearInterval(S.gdTimerInterval);startSpeakPhase();} },1000);
 }
@@ -1058,32 +1945,52 @@ async function submitAnswer(){
   S.ivAnswers.push(answer);
 
   const reviewArea=document.getElementById('iv-review-area');
-  reviewArea.innerHTML=`<div class="ai-thinking">Evaluating your answer <div class="ai-dots"><span></span><span></span><span></span></div></div>`;
+  reviewArea.innerHTML=`<div class="ai-thinking">🤖 Mistral AI is evaluating your answer <div class="ai-dots"><span></span><span></span><span></span></div></div>`;
 
   const q=S.ivQs[S.currentIQ];
-  const reviewJson=await callClaudeJSON(
-    `You are a senior interviewer. Evaluate this answer for a career competition.
+
+  // ── Use Mistral API for interview evaluation ──
+  const reviewJson = await callMistralJSON(
+    `You are a senior HR interviewer at a top company evaluating a candidate in a career competition.
+
 Question: "${q.q}"
 Category: ${q.cat}
-Answer: "${answer}"
-Return JSON: { "verdict": "HIRE"|"MAYBE"|"PASS", "ai_score": 1-10, "strengths": string (≤15 words), "improvements": string (≤15 words) }`,
-    'Return only valid JSON.'
+Candidate's Answer: "${answer}"
+
+Evaluate strictly and fairly. Return ONLY a valid JSON object with exactly these fields:
+{
+  "verdict": "HIRE" or "MAYBE" or "PASS",
+  "ai_score": a number from 1 to 10,
+  "strengths": "one sentence up to 15 words describing what was good",
+  "improvements": "one sentence up to 15 words on what to improve"
+}`,
+    'You are a strict but fair interview evaluator. Return only valid JSON, no markdown, no explanation.'
   );
-  const review=reviewJson||{verdict:'MAYBE',ai_score:6,strengths:'Clear and structured response.',improvements:'Add specific examples and metrics.'};
+
+  const review = reviewJson || {
+    verdict: 'MAYBE',
+    ai_score: 6,
+    strengths: 'Clear and structured response provided.',
+    improvements: 'Add specific examples and measurable outcomes.'
+  };
+
+  // Clamp score to 1–10
+  review.ai_score = Math.max(1, Math.min(10, Number(review.ai_score) || 6));
+
   S.ivAIReviews.push(review);
-  S.ivAITotal+=review.ai_score;
+  S.ivAITotal += review.ai_score;
 
-  // Audience scoring
-  const audScore=Math.max(1,Math.min(10,review.ai_score+(Math.random()*3-1.5)));
-  const audRounded=Math.round(audScore*10)/10;
-  S.ivAudTotal+=audRounded;
+  // Audience scoring (slight variation from AI score)
+  const audScore = Math.max(1, Math.min(10, review.ai_score + (Math.random()*3 - 1.5)));
+  const audRounded = Math.round(audScore * 10) / 10;
+  S.ivAudTotal += audRounded;
 
-  const verdictClass=review.verdict==='HIRE'?'hire':review.verdict==='MAYBE'?'maybe':'pass';
+  const verdictClass = review.verdict==='HIRE' ? 'hire' : review.verdict==='MAYBE' ? 'maybe' : 'pass';
 
   reviewArea.innerHTML=`
     <div class="ai-review-block">
       <div class="air-header">
-        <div class="air-source">🤖 AI Interviewer</div>
+        <div class="air-source">🤖 Mistral AI Interviewer</div>
         <div class="air-verdict ${verdictClass}">${review.verdict}</div>
         <div class="air-score">${review.ai_score}/10</div>
       </div>
@@ -1187,12 +2094,375 @@ function launchConfetti(){
 
 function restartGame(){
   clearInterval(S.timerInterval); clearInterval(S.gdTimerInterval); clearInterval(S.speakTimerInterval);
-  Object.assign(S,{playerName:'',quizQs:[],currentQ:0,score:0,passed:false,gdTopic:'',gdSpeech:'',aiPlayers:[],aiSpeeches:{},gdAIScores:{},gdAudScores:{},gdVotes:{},ivQs:[],currentIQ:0,ivAnswers:[],ivAIReviews:[],ivAITotal:0,ivAudTotal:0,audienceMembers:[]});
+  Object.assign(S,{playerName:'',playerAvatar:'',quizQs:[],currentQ:0,score:0,passed:false,gdTopic:'',gdSpeech:'',aiPlayers:[],aiSpeeches:{},gdAIScores:{},gdAudScores:{},gdVotes:{},ivQs:[],currentIQ:0,ivAnswers:[],ivAIReviews:[],ivAITotal:0,ivAudTotal:0,audienceMembers:[]});
   document.getElementById('player-name-input').value='';
+  resetAvatarUI();
   showScreen('screen-lobby');
 }
 
 document.getElementById('player-name-input').addEventListener('keydown',e=>{ if(e.key==='Enter')startGame(); });
+document.getElementById('player-name-input').addEventListener('input', refreshPreviewName);
+
+// Boot
+initAvatarGrid();
+
+// ════════════════════════════════════════════
+//  VOICE CHAT — Web Speech API
+//  Works in: Chrome, Edge, Safari (partial)
+// ════════════════════════════════════════════
+
+const VOICE = {
+  gdMode: false,       // voice mode enabled for GD
+  ivMode: false,       // voice mode enabled for Interview
+  gdRecording: false,
+  ivRecording: false,
+  recognition: null,   // SpeechRecognition instance
+  synthesis: window.speechSynthesis,
+  waveInterval: null,
+  supportsSpeech: ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window),
+  supportsTTS: ('speechSynthesis' in window),
+};
+
+// ── TOGGLE VOICE MODE ───────────────────────
+function toggleVoiceMode(context) {
+  if (!VOICE.supportsSpeech) {
+    alert('Voice recognition is not supported in your browser.\nPlease use Chrome or Edge for the best experience.');
+    return;
+  }
+
+  if (context === 'gd') {
+    VOICE.gdMode = !VOICE.gdMode;
+    const pill = document.getElementById('gd-voice-toggle');
+    const bar  = document.getElementById('gd-voice-bar');
+    const note = document.getElementById('gd-voice-notice');
+    pill.classList.toggle('active', VOICE.gdMode);
+    bar.style.display  = VOICE.gdMode ? 'flex' : 'none';
+    note.classList.toggle('show', VOICE.gdMode);
+    setVoiceStatus('gd', VOICE.gdMode ? 'Ready' : 'Off');
+
+  } else if (context === 'iv') {
+    VOICE.ivMode = !VOICE.ivMode;
+    const pill = document.getElementById('iv-voice-toggle');
+    const bar  = document.getElementById('iv-voice-bar');
+    const note = document.getElementById('iv-voice-notice');
+    pill.classList.toggle('active', VOICE.ivMode);
+    bar.style.display  = VOICE.ivMode ? 'flex' : 'none';
+    note.classList.toggle('show', VOICE.ivMode);
+    setVoiceStatus('iv', VOICE.ivMode ? 'Ready' : 'Off');
+
+    // When turning on IV voice, read the current question aloud
+    if (VOICE.ivMode && S.ivQs.length) {
+      const q = S.ivQs[S.currentIQ];
+      if (q) speakText('Interview question: ' + q.q, 'iv');
+    }
+  }
+}
+
+// ── SET STATUS LABEL ────────────────────────
+function setVoiceStatus(ctx, text, cls='') {
+  const el = document.getElementById(`${ctx}-voice-status`);
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'voice-status' + (cls ? ' ' + cls : '');
+}
+
+// ── ANIMATE WAVEFORM ────────────────────────
+function startWave(ctx) {
+  const wave = document.getElementById(`${ctx}-wave`);
+  if (!wave) return;
+  wave.classList.add('active');
+  if (ctx === 'iv') wave.classList.add('iv-wave');
+  const bars = wave.querySelectorAll('.vw-bar');
+  VOICE.waveInterval = setInterval(() => {
+    bars.forEach(b => {
+      b.style.height = (4 + Math.random() * 20) + 'px';
+    });
+  }, 100);
+}
+function stopWave(ctx) {
+  const wave = document.getElementById(`${ctx}-wave`);
+  if (!wave) return;
+  wave.classList.remove('active','iv-wave');
+  clearInterval(VOICE.waveInterval);
+  wave.querySelectorAll('.vw-bar').forEach(b => b.style.height = '6px');
+}
+
+// ── BUILD RECOGNITION INSTANCE ──────────────
+function buildRecognition(onResult, onEnd) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const rec = new SR();
+  rec.continuous    = true;
+  rec.interimResults = true;
+  rec.lang          = 'en-IN';   // Indian English — best for placement context
+  let finalText = '';
+
+  rec.onresult = (e) => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) finalText += t + ' ';
+      else interim = t;
+    }
+    onResult(finalText, interim);
+  };
+  rec.onerror = (e) => {
+    console.warn('Speech recognition error:', e.error);
+    if (e.error === 'not-allowed') {
+      alert('Microphone access was denied. Please allow mic permissions and try again.');
+    }
+  };
+  rec.onend = () => { onEnd(finalText); };
+  return { rec, getFinal: () => finalText };
+}
+
+// ── GD MIC ──────────────────────────────────
+let gdRecognitionObj = null;
+
+function toggleGDMic() {
+  if (VOICE.gdRecording) {
+    stopGDMic();
+  } else {
+    startGDMic();
+  }
+}
+
+function startGDMic() {
+  VOICE.gdRecording = true;
+  const btn = document.getElementById('gd-mic-btn');
+  btn.textContent = '⏹';
+  btn.classList.add('recording');
+  setVoiceStatus('gd', 'Listening…', 'vs-recording');
+  startWave('gd');
+
+  const textarea = document.getElementById('gd-speech-input');
+
+  gdRecognitionObj = buildRecognition(
+    (finalText, interim) => {
+      textarea.value = finalText + interim;
+    },
+    (finalText) => {
+      if (VOICE.gdRecording) stopGDMic(); // safety
+    }
+  );
+  gdRecognitionObj.rec.start();
+}
+
+function stopGDMic() {
+  VOICE.gdRecording = false;
+  const btn = document.getElementById('gd-mic-btn');
+  btn.textContent = '🎤';
+  btn.classList.remove('recording');
+  setVoiceStatus('gd', 'Done ✓', 'vs-processing');
+  stopWave('gd');
+  if (gdRecognitionObj) {
+    gdRecognitionObj.rec.stop();
+    gdRecognitionObj = null;
+  }
+}
+
+// ── INTERVIEW MIC ────────────────────────────
+let ivRecognitionObj = null;
+
+function toggleIVMic() {
+  if (VOICE.ivRecording) {
+    stopIVMic();
+  } else {
+    startIVMic();
+  }
+}
+
+function startIVMic() {
+  VOICE.ivRecording = true;
+  const btn = document.getElementById('iv-mic-btn');
+  btn.textContent = '⏹';
+  btn.classList.add('recording');
+  setVoiceStatus('iv', 'Listening…', 'vs-recording');
+  startWave('iv');
+
+  const textarea = document.getElementById('iv-answer');
+  if (textarea) textarea.value = '';
+
+  ivRecognitionObj = buildRecognition(
+    (finalText, interim) => {
+      if (textarea) textarea.value = finalText + interim;
+    },
+    (finalText) => {
+      if (VOICE.ivRecording) stopIVMic();
+    }
+  );
+  ivRecognitionObj.rec.start();
+}
+
+function stopIVMic() {
+  VOICE.ivRecording = false;
+  const btn = document.getElementById('iv-mic-btn');
+  if (btn) { btn.textContent = '🎤'; btn.classList.remove('recording'); }
+  setVoiceStatus('iv', 'Done ✓', 'vs-processing');
+  stopWave('iv');
+  if (ivRecognitionObj) {
+    ivRecognitionObj.rec.stop();
+    ivRecognitionObj = null;
+  }
+}
+
+// ── TEXT TO SPEECH (AI reads question / feedback) ──
+function speakText(text, ctx) {
+  if (!VOICE.supportsTTS) return;
+  VOICE.synthesis.cancel(); // stop any ongoing speech
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang  = 'en-IN';
+  utt.rate  = 0.95;
+  utt.pitch = 1.0;
+
+  // Pick a slightly different voice for AI interviewer
+  const voices = VOICE.synthesis.getVoices();
+  const preferred = voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('male'))
+                 || voices.find(v => v.lang.startsWith('en'))
+                 || null;
+  if (preferred) utt.voice = preferred;
+
+  if (ctx === 'iv') {
+    const chip = document.getElementById('ai-speaking-chip');
+    if (chip) chip.classList.add('visible');
+    utt.onend = () => { if (chip) chip.classList.remove('visible'); };
+    setVoiceStatus('iv', 'AI Speaking…', 'vs-speaking');
+    utt.onend = () => {
+      if (chip) chip.classList.remove('visible');
+      setVoiceStatus('iv', 'Your turn', '');
+    };
+  }
+  VOICE.synthesis.speak(utt);
+}
+
+// ── Read AI feedback aloud after evaluation ──
+function speakIVFeedback(review) {
+  if (!VOICE.ivMode || !VOICE.supportsTTS) return;
+  const text = `Your score is ${review.ai_score} out of 10. Verdict: ${review.verdict}. Strength: ${review.strengths}. To improve: ${review.improvements}`;
+  speakText(text, 'iv');
+}
+
+// ── Hook into renderIVQuestion to auto-read question ──
+const _origRenderIVQuestion = renderIVQuestion;
+// (override defined after original — see below)
+
+// ── Stop all voice when switching screens ──
+function stopAllVoice() {
+  if (VOICE.gdRecording) stopGDMic();
+  if (VOICE.ivRecording) stopIVMic();
+  if (VOICE.supportsTTS) VOICE.synthesis.cancel();
+}
+
+// ── Reset voice state on game restart ──
+const _origRestartGame = restartGame;
+
+// ════════════════════════════════════════════
+//  GUIDE / HOW TO PLAY
+// ════════════════════════════════════════════
+let currentGuideTab = 0;
+const GUIDE_TOTAL = 6;
+
+function openGuide(){
+  document.getElementById('guide-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGuide(){
+  document.getElementById('guide-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchGuideTab(idx){
+  // deactivate old
+  document.getElementById('gpanel-' + currentGuideTab).classList.remove('active');
+  document.getElementById('gtab-'   + currentGuideTab).classList.remove('active');
+  document.getElementById('gdot-'   + currentGuideTab).classList.remove('active');
+  // activate new
+  currentGuideTab = idx;
+  document.getElementById('gpanel-' + idx).classList.add('active');
+  document.getElementById('gtab-'   + idx).classList.add('active');
+  document.getElementById('gdot-'   + idx).classList.add('active');
+  // update nav buttons
+  document.getElementById('gnb-prev').disabled = idx === 0;
+  document.getElementById('gnb-prev').style.opacity = idx === 0 ? '0.3' : '1';
+  const nextBtn = document.getElementById('gnb-next');
+  if(idx === GUIDE_TOTAL - 1){
+    nextBtn.textContent = 'Got It ✓';
+    nextBtn.onclick = closeGuide;
+  } else {
+    nextBtn.textContent = 'Next →';
+    nextBtn.onclick = () => guideNav(1);
+  }
+}
+
+function guideNav(dir){
+  const next = Math.max(0, Math.min(GUIDE_TOTAL - 1, currentGuideTab + dir));
+  switchGuideTab(next);
+}
+
+// close on Escape key
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeGuide();
+});
+
+// init button state
+document.getElementById('gnb-prev').style.opacity = '0.3';
+document.getElementById('gnb-prev').disabled = true;
+
+// ── Voice: auto-read question when IV voice mode is ON ──
+const __origRenderIVQ = renderIVQuestion;
+renderIVQuestion = function() {
+  __origRenderIVQ();
+  // reset mic button state
+  const btn = document.getElementById('iv-mic-btn');
+  if (btn) { btn.textContent = '🎤'; btn.classList.remove('recording'); }
+  if (VOICE.ivRecording) stopIVMic();
+  setVoiceStatus('iv', 'Ready');
+
+  // Read question aloud if voice mode on
+  if (VOICE.ivMode && S.ivQs[S.currentIQ]) {
+    setTimeout(() => speakText('Question ' + (S.currentIQ+1) + ': ' + S.ivQs[S.currentIQ].q, 'iv'), 400);
+  }
+};
+
+// ── Voice: speak feedback after submitAnswer ──
+const __origSubmitAnswer = submitAnswer;
+submitAnswer = async function() {
+  // Stop mic if running
+  if (VOICE.ivRecording) stopIVMic();
+  await __origSubmitAnswer();
+  // After review renders, read feedback aloud
+  if (VOICE.ivMode && S.ivAIReviews.length) {
+    setTimeout(() => speakIVFeedback(S.ivAIReviews[S.ivAIReviews.length - 1]), 600);
+  }
+};
+
+// ── Voice: clean up on restart ──
+const __origRestartGame = restartGame;
+restartGame = function() {
+  stopAllVoice();
+  VOICE.gdMode = false;
+  VOICE.ivMode = false;
+  // reset GD voice UI
+  const gdPill = document.getElementById('gd-voice-toggle');
+  const gdBar  = document.getElementById('gd-voice-bar');
+  const gdNote = document.getElementById('gd-voice-notice');
+  if(gdPill) gdPill.classList.remove('active');
+  if(gdBar)  gdBar.style.display = 'none';
+  if(gdNote) gdNote.classList.remove('show');
+  // reset IV voice UI
+  const ivPill = document.getElementById('iv-voice-toggle');
+  const ivBar  = document.getElementById('iv-voice-bar');
+  const ivNote = document.getElementById('iv-voice-notice');
+  if(ivPill) ivPill.classList.remove('active');
+  if(ivBar)  ivBar.style.display = 'none';
+  if(ivNote) ivNote.classList.remove('show');
+  __origRestartGame();
+};
+
+// Pre-load TTS voices (needed for some browsers)
+if (VOICE.supportsTTS) {
+  window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+}
 </script>
 </body>
 </html>
